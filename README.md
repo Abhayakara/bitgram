@@ -3,8 +3,8 @@ a field on the left, and see the packet you have described drawn as
 ASCII art and as an HTML table on the right.   The HTML table format is
 plagiarized from the wikipedia article on the IPv4 packet header.
 
-The XML takes &lt;bitgram&rt;...&lt;/bitgram&rt; at the top, with 
-&lt;field&rt;...&lt;/field&rt; for each field in the packet.
+The XML takes &lt;bitgram&gt;...&lt;/bitgram&gt; at the top, with 
+&lt;field&gt;...&lt;/field&gt; for each field in the packet.
 
 The bitgram tag takes the following attributes:
 <dl>
