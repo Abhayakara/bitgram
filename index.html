@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>XML Packet Representation</title>
+    <script type="text/javascript" src="bitgram.js"></script>
+    <style type="text/css">
+      .three-columns {
+      float: left;
+      }
+      .left-column {
+      width: 25%;
+      float: left;
+      }
+      .mid-column {
+      width: 35%;
+      float: left;
+      }
+      .right-column {
+      width: 40%;
+      float: left;
+      left-margin: 10px;
+      }
+      .bitgram-table {
+      /* the table... */
+      text-align: center;
+      margin-top: 1em;
+      margin-right: 0px;
+      margin-bottom: 1em;
+      margin-left: 0px;
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 0px;
+      border-collapse: collapse;
+      color: #000;
+      line-height: 1.5em;
+      border-spacing: 2px;
+      font-family: sans-serif;
+      }
+      .bitgram-tbody {
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      }
+      .bitgram-caption {
+      font-weight: bold;
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .offsets {
+      /* the 'offsets' label */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      border-bottom: none;
+      border-right: none;
+      font-style: italic;
+      background-color: #F9F9F9;
+      }
+      .left-octet {
+      /* the 'octet' column label */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      border-left: none;
+      background-color: #F9F9F9;
+      }
+      .octet {
+      /* A column label containing the octet number */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .top-octet {
+      /* the 'octet' row label */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      border-top: none;
+      background-color: #F9F9F9;
+      }
+      .bit-label {
+      /* A 'bit' row label. */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .bit {
+      /* A column label containing the bit number */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .blank-field {
+      /* If the last field doesn't end the grid, this column spans
+         the remaining bit columns with no border. */
+      border-left: none;
+      border-bottom: hidden;
+      border-right: hidden;
+      border-top: hidden;
+      border-collapse: collapse;
+      }
+      .octet-offset {
+      /* A row label containing an octet offset. */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .bit-offset {
+      /* A row label containing a bit offset. */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+      .field {
+      /* A table cell containing a field. */
+      border-color: #AAA;
+      border-style: solid;
+      border-width: 1px;
+      border-collapse: collapse;
+      background-color: #F9F9F9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="three-columns">
+      <div id="clm1" class="left-column">
+	<textarea rows="100" cols="60"
+		  onpageshow="checkValid(this.value)"
+		  oninput="checkValid(this.value)">
+<bitgram id="ipv4-header" width="32">
+  <field name="version" width="4"/>
+  <field name="ihl" width="4"/>
+  <field name="dscp" width="5"/>
+  <field name="ecn" width="3"/>
+  <field name="datagram-length" width="16"/>
+  <field name="id" width="16"/>
+  <field name="x" width="1"/>
+  <field name="d" width="1"/>
+  <field name="m" width="1"/>
+  <field name="frag-off" width="13"/>
+  <field name="ttl" width="8"/>
+  <field name="protocol" width="8"/>
+  <field name="checksum" width="16"/>
+  <field name="srcaddr" width="32"/>
+  <field name="dstaddr" width="32"/>
+  <field name="options" width="variable" stride="8"/>
+</bitgram>
+	</textarea>
+      </div>
+      <div id="clm2" class="mid-column">
+<pre>
+      +---------------+---------------+---------------+---------------+
+      |0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7|0 1 2 3 4 5 6 7|
+      +-------+-------+---------+-----+---------------+---------------+
+      |version|  ihl  |   dscp  | ecn |        datagram-length        |
+      +-------+-------+---------+-----+-+-+-+-------------------------+
+      |               id              |x|d|m|         frag-off        |
+      +---------------+---------------+-+-+-+-------------------------+
+      |      ttl      |    protocol   |            checksum           |
+      +---------------+---------------+-------------------------------+
+      |                            srcaddr                            |
+      +---------------------------------------------------------------+
+      |                            dstaddr                            |
+      +---------------------------------------------------------------+
+      |                            options                            |
+      +---------------------------------------------------------------+
+
+
+  </pre>
+      </div>
+      <div id="clm3" class="right-column">
+	<table class="bitgram-table" id="ipv4-header">
+	  <tbody class="bitgram-tbody" <tr="">
+		 <tr><th class="offsets">Offsets</th>
+		   <th class="left-octet">Octet</th>
+		   <th colspan="8" class="octet">0</th>
+		   <th colspan="8" class="octet">1</th>
+		   <th colspan="8" class="octet">2</th>
+		   <th colspan="8" class="octet">3</th>
+		 </tr>
+	         <tr>
+		   <th class="top-octet">Octet</th>
+		   <th class="bit-label">Bit</th>
+		   <th style="width:2.6%" class="bit">0</th>
+		   <th style="width:2.6%" class="bit">1</th>
+		   <th style="width:2.6%" class="bit">2</th>
+		   <th style="width:2.6%" class="bit">3</th>
+		   <th style="width:2.6%" class="bit">4</th>
+		   <th style="width:2.6%" class="bit">5</th>
+		   <th style="width:2.6%" class="bit">6</th>
+		   <th style="width:2.6%" class="bit">7</th>
+		   <th style="width:2.6%" class="bit">8</th>
+		   <th style="width:2.6%" class="bit">9</th>
+		   <th style="width:2.6%" class="bit">10</th>
+		   <th style="width:2.6%" class="bit">11</th>
+		   <th style="width:2.6%" class="bit">12</th>
+		   <th style="width:2.6%" class="bit">13</th>
+		   <th style="width:2.6%" class="bit">14</th>
+		   <th style="width:2.6%" class="bit">15</th>
+		   <th style="width:2.6%" class="bit">16</th>
+		   <th style="width:2.6%" class="bit">17</th>
+		   <th style="width:2.6%" class="bit">18</th>
+		   <th style="width:2.6%" class="bit">19</th>
+		   <th style="width:2.6%" class="bit">20</th>
+		   <th style="width:2.6%" class="bit">21</th>
+		   <th style="width:2.6%" class="bit">22</th>
+		   <th style="width:2.6%" class="bit">23</th>
+		   <th style="width:2.6%" class="bit">24</th>
+		   <th style="width:2.6%" class="bit">25</th>
+		   <th style="width:2.6%" class="bit">26</th>
+		   <th style="width:2.6%" class="bit">27</th>
+		   <th style="width:2.6%" class="bit">28</th>
+		   <th style="width:2.6%" class="bit">29</th>
+		   <th style="width:2.6%" class="bit">30</th>
+		   <th style="width:2.6%" class="bit">31</th>
+		 </tr><tr>
+		   <th class="octet-offset">0</th>
+		   <th class="bit-offset">0</th>
+		   <td class="field" colspan="4">version</td>
+		   <td class="field" colspan="4">ihl</td>
+		   <td class="field" colspan="5">dscp</td>
+		   <td class="field" colspan="3">ecn</td>
+		   <td class="field" colspan="16">datagram-length</td>
+		 </tr>
+		 <tr>
+		   <th class="octet-offset">4</th>
+		   <th class="bit-offset">32</th>
+		   <td class="field" colspan="16">id</td>
+		   <td class="field" colspan="1">x</td>
+		   <td class="field" colspan="1">d</td>
+		   <td class="field" colspan="1">m</td>
+		   <td class="field" colspan="13">frag-off</td>
+		 </tr>
+		 <tr>
+		   <th class="octet-offset">8</th>
+		   <th class="bit-offset">64</th>
+		   <td class="field" colspan="8">ttl</td>
+		   <td class="field" colspan="8">protocol</td>
+		   <td class="field" colspan="16">checksum</td>
+		 </tr>
+		 <tr>
+		   <th class="octet-offset">12</th>
+		   <th class="bit-offset">96</th>
+		   <td class="field" colspan="32">srcaddr</td>
+		 </tr>
+		 <tr>
+		   <th class="octet-offset">16</th>
+		   <th class="bit-offset">128</th>
+		   <td class="field" colspan="32">dstaddr</td>
+		 </tr>
+		 <tr>
+		   <th class="octet-offset">20</th>
+		   <th class="bit-offset">160</th>
+		   <td class="field" colspan="32">options</td>
+		 </tr>
+	</tbody></table>
+      </div>
+    </div>
+  </body>
+</html>
